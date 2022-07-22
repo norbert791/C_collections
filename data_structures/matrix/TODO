@@ -1,0 +1,40 @@
+Refactor:
+  - [ ] Security
+  - [ ] Clean
+  - [ ] Redundancy
+ 
+Implementation:
+  - [x] Create/Destroy
+  - [x] Getters
+  - [x] Update
+  - [x] At
+  - [x] Update symmetric
+  - [x] Add row
+  - [x] Add column
+  - [x] Expand
+  - [ ] Macros
+
+Tests:
+  - [x] Create/Destroy
+  - [x] Getters
+  - [x] Update
+  - [x] At
+  - [x] Update symmetric
+  - [x] Add row
+  - [x] Add column
+  - [x] Expand
+  - [ ] Macros
+
+Documentation:
+  - [ ] Create/Destroy
+  - [ ] Getters
+  - [ ] Update
+  - [ ] At
+  - [ ] Update symmetric
+  - [ ] Add row
+  - [kinda, needs fixes] Add column
+  - [ ] Expand
+  - [ ] Macros
+
+License:
+  - [ ] Add license maybe, I guess xD
