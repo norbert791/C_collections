@@ -12,6 +12,11 @@ Implementation:
   - [x] Add row
   - [x] Add column
   - [x] Expand
+  - [ ] Delete row
+  - [ ] Delete column
+  - [ ] Copy
+  - [ ] Set row
+  - [ ] Set column
   - [ ] Macros
 
 Tests:
@@ -23,6 +28,11 @@ Tests:
   - [x] Add row
   - [x] Add column
   - [x] Expand
+  - [ ] Delete row
+  - [ ] Delete column
+  - [ ] Copy
+  - [ ] Set row
+  - [ ] Set column
   - [ ] Macros
 
 Documentation:
@@ -34,6 +44,11 @@ Documentation:
   - [ ] Add row
   - [kinda, needs fixes] Add column
   - [ ] Expand
+  - [ ] Delete row
+  - [ ] Delete column
+  - [ ] Copy
+  - [ ] Set row
+  - [ ] Set column
   - [ ] Macros
 
 License:
