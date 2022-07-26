@@ -1,0 +1,50 @@
+Implementation:
+  - [x] Create/Destroy
+  - [x] Getters
+  - [x] Has edge
+  - [x] Update edge
+  - [x] Update vertice
+  - [x] Update edge symmetric
+  - [x] Updates from arrays
+  - [x] Add vertice
+  - [x] Add Edge
+  - [ ] Delete vertice (need matrix deletes)
+  - [ ] Delete edge (need matrix deletes)
+  - [some] Macros
+  - [ ] Error codes
+  - [ ] Observability
+
+Tests:
+  - [x] Create/Destroy
+  - [x] Getters
+  - [x] Has edge
+  - [x] Update edge
+  - [x] Update vertice
+  - [x] Update edge symmetric
+  - [x] Updates from arrays
+  - [x] Add vertice
+  - [x] Add Edge
+  - [ ] Delete vertice (need matrix deletes)
+  - [ ] Delete edge (need matrix deletes)
+  - [x] Macros
+  - [ ] Error codes
+  - [ ] Observability
+
+Documentation:
+  - [ ] Create/Destroy
+  - [ ] Getters
+  - [ ] Has edge
+  - [ ] Update edge
+  - [ ] Update vertice
+  - [ ] Update edge symmetric
+  - [ ] Updates from arrays
+  - [ ] Add vertice
+  - [ ] Add Edge
+  - [ ] Delete vertice (need matrix deletes)
+  - [ ] Delete edge (need matrix deletes)
+  - [ ] Macros
+  - [ ] Error codes
+  - [ ] Observability
+
+License:
+  - [ ] Add license maybe, I guess xD
