@@ -1,6 +1,4 @@
 #include <graph_adj_matrix.h>
-#include <matrix.h>
-#include <vector.h>
 #include <stdlib.h>
 #include <stdint.h>
 
@@ -156,7 +154,7 @@ int graph_update_vertice(Graph* const g, const size_t id, const graph_weight_t n
   if (g == NULL)
     return -1;
   
-  if (id >= g->no_vertices || new_weight == GRAPH_WEIGHT_ZERO)
+  if (id >= g->no_vertices)
     return -1;
 
   register const int vector_update_result = vector_update(g->vertices, id, &(Vertice){.id = id, .weight = new_weight});
@@ -239,9 +237,6 @@ int graph_add_vertice(Graph *g, graph_weight_t weight)
 {
   if (g == NULL)
     return -1;
-  
-  if (weight == GRAPH_WEIGHT_ZERO)
-    return -1;
 
   // Add new vertice to the vector
 
@@ -264,4 +259,70 @@ int graph_add_vertice(Graph *g, graph_weight_t weight)
     return 1;
 
   return 0;
+}
+
+int graph_add_edge(Graph* g, size_t src, size_t dest, graph_weight_t new_weight)
+{
+  int result = graph_update_edge(g, src, dest, new_weight);
+
+  if (result != 0)
+    return result;
+
+  g->no_edges++;
+
+  return result;
+}
+
+int graph_add_edge_symmetric(Graph* const g, const size_t src, const size_t dest, const graph_weight_t new_weight)
+{
+  int result = graph_update_edge_symmetric(g, src, dest, new_weight);
+
+  if (result != 0)
+    return result;
+
+  g->no_edges++;
+
+  return result;
+}
+
+Vector* graph_copy_vertices(const Graph* g)
+{
+  if (g == NULL)
+    return NULL;
+
+  return vector_copy(g->vertices);
+}
+
+Vector* graph_vertice_neighbours(const Graph* g, size_t id)
+{
+  if (g == NULL)
+    return NULL;
+
+  if (id >= g->no_vertices)
+    return NULL;
+
+  Vector* neighbours = vector_create(sizeof(Edge), g->no_vertices);
+
+  if (neighbours == NULL)
+    return NULL;
+
+  for (size_t i = 0; i < g->no_vertices; i++)
+  {
+    graph_weight_t edge_weight = graph_get_edge_weight(g, id, i);
+    if (edge_weight != GRAPH_WEIGHT_ZERO)
+    {
+      int result = vector_push_back(&neighbours, &(Edge){ 
+                                                          .src = id,
+                                                          .dest = i,
+                                                          .weight = edge_weight
+                                                        });
+      if (result != 0)
+      {
+        vector_destroy(neighbours);
+        return NULL;
+      }
+    }
+  }
+
+  return neighbours;
 }

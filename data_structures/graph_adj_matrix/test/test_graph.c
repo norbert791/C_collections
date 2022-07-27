@@ -11,6 +11,8 @@ static void graph_update_edge_symmetric_1_test(void);
 static void graph_update_edge_symmetric_multi_test(void);
 static void graph_update_vertices_from_array_test(void);
 static void graph_update_edges_from_array_test(void);
+static void graph_copy_vertices_test(void);
+static void graph_vertice_neighbours_test(void);
 
 static void graph_create_test(void)
 {
@@ -66,19 +68,6 @@ static void graph_update_vertice_1_test(void)
     assert(graph_get_no_edges(g) == 0);
 
     int result = graph_update_vertice(g, no_vertices, GRAPH_WEIGHT(1));
-    assert(result == -1);
-    
-    graph_destroy(g);
-  }
-  {
-    // Invalid argument/s - invalid weight
-    register const size_t no_vertices = 1;
-    Graph* g = graph_create(no_vertices);
-    assert(g != NULL);
-    assert(graph_get_no_vertices(g) == no_vertices);
-    assert(graph_get_no_edges(g) == 0);
-
-    int result = graph_update_vertice(g, 0, GRAPH_WEIGHT_ZERO);
     assert(result == -1);
     
     graph_destroy(g);
@@ -412,26 +401,6 @@ static void graph_update_vertices_from_array_test(void)
     
     graph_destroy(g);
   }
-  {
-    // Check if proper error index is returned - invalid weight
-    register const size_t no_vertices = 3;
-    register const size_t no_updated_vertices = 3;
-    register const size_t expected_failure = 2;
-    const Vertice updated_vertices[] = { 
-      (Vertice){.id = 0, .weight = GRAPH_WEIGHT(1)},
-      (Vertice){.id = 1, .weight = GRAPH_WEIGHT(2)},
-      (Vertice){.id = 2, .weight = GRAPH_WEIGHT_ZERO}, // Should be invalid
-    };
-    Graph* g = graph_create(no_vertices);
-    assert(g != NULL);
-    assert(graph_get_no_vertices(g) == no_vertices);
-    assert(graph_get_no_edges(g) == 0);        
-
-    int result = graph_update_vertices_from_array(g, updated_vertices, no_updated_vertices);
-    assert(result < -1 && GRAPH_ARRAY_UPDATE_ERROR_INDEX(result) == expected_failure);
-    
-    graph_destroy(g);
-  }
 }
 
 static void graph_update_edges_from_array_test(void)
@@ -601,20 +570,6 @@ static void graph_add_vertice_test(void)
     graph_destroy(g);
   }
   {
-    // Invalid argument/s - invalid weight
-    register const size_t no_vertices = 1;
-    register const graph_weight_t new_weight = GRAPH_WEIGHT_ZERO;
-    Graph* g = graph_create(no_vertices);
-    assert(g != NULL);
-    assert(graph_get_no_vertices(g) == no_vertices);
-    assert(graph_get_no_edges(g) == 0);        
-
-    int result = graph_add_vertice(g, new_weight);
-    assert(result == -1);
-    
-    graph_destroy(g);
-  }
-  {
     // Valid argument/s
     register const size_t no_vertices = 1;
     register const graph_weight_t new_weight = GRAPH_WEIGHT(42);
@@ -628,17 +583,178 @@ static void graph_add_vertice_test(void)
     assert(graph_get_no_vertices(g) == no_vertices + 1);
     assert(graph_get_no_edges(g) == 0);
 
-    result = graph_add_edge(g, no_vertices, no_vertices, new_weight);
-    assert(result == 0);
-    assert(graph_get_edge_weight(g, no_vertices, no_vertices) == new_weight);
-    
     graph_destroy(g);
   }
 }
 
 static void graph_add_edge_test(void)
 {
-  // Add edge is the same as update, so I will just leave this one empty
+  {
+    // Invalid argument/s - invalid graph
+    register const size_t no_vertices = 0;
+    register const graph_weight_t new_weight = GRAPH_WEIGHT(42);
+    Graph* g = graph_create(no_vertices);
+    assert(g == NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    int result = graph_add_edge(g, 0, 0, new_weight);
+    assert(result == -1);
+    
+    graph_destroy(g);
+  }
+  {
+    // Invalid argument/s - invalid weight
+    register const size_t no_vertices = 1;
+    register const graph_weight_t new_weight = GRAPH_WEIGHT_ZERO;
+    Graph* g = graph_create(no_vertices);
+    assert(g != NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    int result = graph_add_edge(g, 0, 0, new_weight);
+    assert(result == -1);
+    
+    graph_destroy(g);
+  }
+  {
+    // Valid argument/s
+    register const size_t no_vertices = 1;
+    register const graph_weight_t new_weight = GRAPH_WEIGHT(42);
+    Graph* g = graph_create(no_vertices);
+    assert(g != NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    int result = graph_add_edge(g, 0, 0, new_weight);
+    assert(result == 0);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 1);
+    
+    graph_destroy(g);
+  }
+}
+
+static void graph_copy_vertices_test(void)
+{
+  {
+    // Invalid argument/s - invalid graph
+    register const size_t no_vertices = 0;
+    Graph* g = graph_create(no_vertices);
+    assert(g == NULL);
+    assert(graph_get_no_vertices(g) == 0);
+    assert(graph_get_no_edges(g) == 0);        
+
+    Vector* copied_vertices = graph_copy_vertices(g);
+    assert(copied_vertices == NULL);
+
+    vector_destroy(copied_vertices);
+    graph_destroy(g);
+  }
+  {
+    // Valid argument/s
+    register const size_t no_vertices = 3;
+    register const size_t no_updated_vertices = 3;
+    const Vertice updated_vertices[] = { 
+      (Vertice){.id = 0, .weight = GRAPH_WEIGHT(1)},
+      (Vertice){.id = 1, .weight = GRAPH_WEIGHT(2)},
+      (Vertice){.id = 2, .weight = GRAPH_WEIGHT(3)},
+    };
+    Graph* g = graph_create(no_vertices);
+    assert(g != NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    int result = graph_update_vertices_from_array(g, updated_vertices, no_updated_vertices);
+    assert(result == 0);
+    
+    Vector* copied_vertices = graph_copy_vertices(g);
+    assert(copied_vertices != NULL);
+
+    Vertice* vert = malloc(sizeof(*vert));
+
+    for (size_t i = 0; i < vector_get_curr_size(copied_vertices); i++)
+    {
+      result = vector_at(copied_vertices, i, vert);
+      assert(result == 0);
+      assert(vert->weight == graph_get_vertice_weight(g, i));
+    }
+
+    free(vert);
+    vector_destroy(copied_vertices);
+    graph_destroy(g);
+  }
+}
+
+#include <stdio.h>
+
+static void graph_vertice_neighbours_test(void)
+{
+  {
+    // Invalid argument/s - invalid graph
+    register const size_t no_vertices = 0;
+    register const size_t id = 0;
+    Graph* g = graph_create(no_vertices);
+    assert(g == NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    Vector* vert_neighbours = graph_vertice_neighbours(g, id);
+    assert(vert_neighbours == NULL);
+
+    vector_destroy(vert_neighbours);
+    graph_destroy(g);   
+  }
+  {
+    // Invalid argument/s - invalid vertice
+    register const size_t no_vertices = 3;
+    register const size_t id = 3;
+    Graph* g = graph_create(no_vertices);
+    assert(g != NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    Vector* vert_neighbours = graph_vertice_neighbours(g, id);
+    assert(vert_neighbours == NULL);
+
+    vector_destroy(vert_neighbours);
+    graph_destroy(g);   
+  }
+  {
+    // Valid argument/s
+    register const size_t no_vertices = 3;
+    register const size_t id = 0;
+    Graph* g = graph_create(no_vertices);
+    assert(g != NULL);
+    assert(graph_get_no_vertices(g) == no_vertices);
+    assert(graph_get_no_edges(g) == 0);        
+
+    for (size_t i = 0; i < no_vertices; i++)
+    {
+      int result = graph_add_edge(g, id, i, GRAPH_WEIGHT(i + 1));
+      assert(result == 0);
+    }
+
+    assert(graph_get_no_edges(g) == no_vertices);
+
+    Vector* vert_neighbours = graph_vertice_neighbours(g, id);
+    assert(vert_neighbours != NULL);
+    assert(vector_get_curr_size(vert_neighbours) == no_vertices);
+
+    Edge* edge = malloc(sizeof(*edge));
+    for (size_t i = 0; i < no_vertices; i++)
+    {
+      int result = vector_at(vert_neighbours, i, edge);
+      assert(result == 0);
+      assert(edge->src == id && edge->dest == i);
+      assert(edge->weight == GRAPH_WEIGHT(i + 1));
+      assert(edge->weight == graph_get_edge_weight(g, id, i));
+    }
+
+    free(edge);
+    vector_destroy(vert_neighbours);
+    graph_destroy(g);   
+  }  
 }
 
 void graph_main_test(void)
@@ -660,4 +776,8 @@ void graph_main_test(void)
   // Add vertice/add edge
   graph_add_vertice_test();
   graph_add_edge_test();
+  // Copy vertices
+  graph_copy_vertices_test();
+  // Get vertice neighbours
+  graph_vertice_neighbours_test();
 }
