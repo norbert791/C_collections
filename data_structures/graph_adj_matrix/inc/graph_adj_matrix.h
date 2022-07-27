@@ -3,9 +3,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+// DEPENDENCIES
+#include <vector.h>
+#include <matrix.h>
+
 #define graph_weight_t double
-#define GRAPH_WEIGHT_ZERO ((graph_weight_t)0)
-#define GRAPH_WEIGHT(numvalue) ((graph_weight_t)numvalue)
+#define GRAPH_WEIGHT_ZERO ((graph_weight_t){0})
+#define GRAPH_WEIGHT(numvalue) ((graph_weight_t){numvalue})
 
 typedef struct GraphAdjMatrix Graph;
 
@@ -44,9 +48,10 @@ int graph_update_edges_from_array(Graph* g, const Edge edges[], size_t no_edges)
 
 int graph_add_vertice(Graph *g, graph_weight_t weight);
 
-// There's not much difference between adding an edge and updating an edge in matrix implementation
-// so might as well alias it
-#define graph_add_edge(g, src, dest, new_weight) graph_update_edge(g, src, dest, new_weight)
-#define graph_add_edge_symmetric(g, src, dest, new_weight) graph_update_edge_symmetric(g, src, dest, new_weight)
+int graph_add_edge(Graph* g, size_t src, size_t dest, graph_weight_t new_weight);
+int graph_add_edge_symmetric(Graph* const g, const size_t src, const size_t dest, const graph_weight_t new_weight);
+
+Vector* graph_copy_vertices(const Graph* g);
+Vector* graph_vertice_neighbours(const Graph* g, size_t id);
 
 #endif // !GRAPH_ADJ_MATRIX_H
