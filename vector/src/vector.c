@@ -220,7 +220,7 @@ int vector_update(Vector* const restrict v, const size_t index, const void* cons
   return 0;
 }
 
-int vector_delete(Vector* const v, const size_t index)
+int vector_remove(Vector* const v, const size_t index)
 {
   if (v == NULL)
     return -1;

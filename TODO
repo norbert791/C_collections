@@ -1,0 +1,2 @@
+CMAKE:
+[ ] different build flags depending on build type (test, release, etc...) and compiler (gcc, clang)
