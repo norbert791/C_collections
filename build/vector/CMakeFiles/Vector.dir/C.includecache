@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../vector/inc/vector.h
+stddef.h
+-
+stdbool.h
+-
+
+/home/norbert/Documents/c_projects/c_collections/vector/src/vector.c
+vector.h
+-
+stdint.h
+-
+stdlib.h
+-
+string.h
+-
+

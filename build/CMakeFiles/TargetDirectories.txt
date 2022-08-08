@@ -1,0 +1,9 @@
+/home/norbert/Documents/c_projects/c_collections/build/CMakeFiles/rebuild_cache.dir
+/home/norbert/Documents/c_projects/c_collections/build/CMakeFiles/edit_cache.dir
+/home/norbert/Documents/c_projects/c_collections/build/hash_table/CMakeFiles/rebuild_cache.dir
+/home/norbert/Documents/c_projects/c_collections/build/hash_table/CMakeFiles/edit_cache.dir
+/home/norbert/Documents/c_projects/c_collections/build/hash_table/CMakeFiles/HashTable_test.dir
+/home/norbert/Documents/c_projects/c_collections/build/hash_table/CMakeFiles/HashTable.dir
+/home/norbert/Documents/c_projects/c_collections/build/vector/CMakeFiles/rebuild_cache.dir
+/home/norbert/Documents/c_projects/c_collections/build/vector/CMakeFiles/edit_cache.dir
+/home/norbert/Documents/c_projects/c_collections/build/vector/CMakeFiles/Vector.dir
