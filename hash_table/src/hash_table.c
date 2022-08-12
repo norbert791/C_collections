@@ -24,16 +24,16 @@ struct HashTable
 
 static inline void destroy_list(HashTableNode* list);
 
-static inline void hash_table_fixup(HashTable* table);
+static inline void hash_table_fixup(HashTable** table);
 
 static inline HashTableNode* copy_list(const HashTableNode* list, size_t key_size, size_t value_size);
 
-HashTable* hash_table_create(size_t key_size, size_t value_size, size_t initial_size,
+HashTable* hash_table_create(const size_t key_size, const size_t value_size, size_t initial_size,
                              size_t (*hash_function)(const void*), int (*is_different)(const void*, const void*)) {
-    
+
     if (hash_function == NULL || is_different == NULL 
         || key_size == 0 || value_size == 0) {return NULL;}
-    if (initial_size == 0) {initial_size = 32;}
+    if (initial_size == 0) {initial_size = HT_DEFAULT_SIZE;}
 
     HashTable* result = calloc(1, sizeof(*result) + sizeof(result->node_array[0]) * initial_size);
 
@@ -58,63 +58,8 @@ void hash_table_destroy(HashTable* hash_table) {
     }
 }
 
-int hash_table_put(HashTable** hash_table_ptr, register const void* key, register const void* value) {
-    HashTable* hash_table = *hash_table_ptr;
-    size_t index = hash_table->hash_function(key);
-    index %= hash_table->array_size;
-    
-    if (hash_table->node_array[0] == NULL) {
-        HashTableNode* temp = malloc(sizeof(*temp) + sizeof(*temp->data)
-                            * (hash_table->value_size + hash_table->key_size));
-
-        if (temp == NULL) {
-            return 1;
-        }
-
-        temp->next == NULL;
-        memcpy(temp->data, key, hash_table->key_size);
-        memcpy(&temp->data[hash_table->key_size], value, hash_table->value_size);
-        hash_table->elements_stored++;
-
-        if (hash_table->elements_stored * 2 >= hash_table->array_size) {
-            hash_table_resize(hash_table_ptr, (*hash_table_ptr)->array_size * 2);
-        }
-
-        return 0;
-    }
-
-    HashTableNode* it = hash_table->node_array[index];
-
-    while (it->next != NULL && hash_table->is_different(key, it->data) != 0) {
-        it = it->next;
-    }
-    
-    if (hash_table->is_different(key, it->data) == 0) {
-        memcpy(&it->data[hash_table->key_size], value, hash_table->value_size);
-        return 0;
-    }
-
-    it->next = calloc(1, sizeof(*it) + sizeof(it->data[0]) * hash_table->value_size);
-    
-    if (it->next == NULL) {
-        return 1;
-    }
-    
-    it = it->next;
-
-    memcpy(it->data, key, hash_table->key_size);
-    memcpy(&it->data[hash_table->key_size], value, hash_table->value_size);
-    hash_table->elements_stored++; 
-
-    if (hash_table->elements_stored * 2 >= hash_table->array_size) {
-        hash_table_resize(hash_table_ptr, (*hash_table_ptr)->array_size * 2);
-    }
-
-    return 0;
-}
-
-int hash_table_insert(HashTable** hash_table_ptr, register const void* key, register const void* value) {
-    
+int hash_table_put(HashTable** const hash_table_ptr, register const void* const key,
+                    register const void* const value) {
     HashTable* hash_table = *hash_table_ptr;
     size_t index = hash_table->hash_function(key);
     index %= hash_table->array_size;
@@ -125,7 +70,11 @@ int hash_table_insert(HashTable** hash_table_ptr, register const void* key, regi
         *node_ptr = (*node_ptr)->next;
     }
 
-    if (*node_ptr != NULL) {return 1;}
+    if (*node_ptr != NULL) {
+        memcpy(&(*node_ptr)->data[hash_table->key_size],
+                value, hash_table->value_size);
+        return 0;
+    }
     
     *node_ptr = malloc(sizeof(**node_ptr) + sizeof((*node_ptr)->data[0])
                     * (hash_table->key_size + hash_table->value_size));
@@ -147,49 +96,65 @@ int hash_table_insert(HashTable** hash_table_ptr, register const void* key, regi
     return 0;
 }
 
-int hash_table_remove(HashTable** table_ptr, const void* key) {
-    HashTable* table = *table_ptr;
+int hash_table_insert(HashTable** const hash_table_ptr, register const void* const key,
+                        register const void* const value) {
+    
+    HashTable* hash_table = *hash_table_ptr;
+    size_t index = hash_table->hash_function(key);
+    index %= hash_table->array_size;
+    
+    HashTableNode** node_ptr = &hash_table->node_array[index];
 
+    while (*node_ptr != NULL && hash_table->is_different((*node_ptr)->data, key) != 0) {
+        *node_ptr = (*node_ptr)->next;
+    }
+
+    if (*node_ptr != NULL) {return HT_DUPLICATE;}
+    
+    *node_ptr = malloc(sizeof(**node_ptr) + sizeof((*node_ptr)->data[0])
+                    * (hash_table->key_size + hash_table->value_size));
+    
+    if (*node_ptr == NULL) {return HT_MEM_FAIL;}
+
+    (*node_ptr)->next = NULL;
+    memcpy((*node_ptr)->data, key, hash_table->key_size);
+    memcpy(&(*node_ptr)->data[hash_table->key_size], value, hash_table->value_size);
+
+    hash_table->elements_stored++;
+
+    if (hash_table->elements_stored > hash_table->array_size / 2) {
+        return hash_table_resize(hash_table_ptr, sizeof(*hash_table)
+                                + sizeof(hash_table->node_array[0])
+                                * hash_table->array_size * 2);
+    }
+    
+    return 0;
+}
+
+int hash_table_remove(HashTable** const table_ptr, const void* const key) { /*TODO: iterate over pointers, not nodes to simplify code */
+    HashTable* table = *table_ptr;
     size_t index = table->hash_function(key);
     index %= table->array_size;
+    HashTableNode** iterator = &table->node_array[index];
 
-    if (table->node_array[index] == NULL) {
-        return 1;
+    while(*iterator != NULL && table->is_different(&(*iterator)->data[0], key) != 0) {
+        *iterator = (*iterator)->next;
     }
 
-    if (table->is_different(key, &table->node_array[0]) == 0) {
-        HashTableNode* temp = table->node_array[0]->next;
-        free(table->node_array[0]);
-        table->node_array[0] = temp;
-        table->elements_stored--;
-        
-        if (table->elements_stored < table->array_size / 4) {
-                        hash_table_resize(table_ptr, (*table_ptr)->array_size / 2);
-
-        }
-
-        return 0;
+    if (*iterator == NULL) {
+        return HT_NOT_FOUND;
     }
 
-    HashTableNode* it = table->node_array[index];
+    HashTableNode* temp = *iterator;
+    *iterator = (*iterator)->next;
+    free(temp);
+    table->elements_stored--;
 
-    while (it->next != NULL && table->is_different(key, &it->next->data[0]) != 0) {it = it->next;}
-
-    if (table->is_different(key, &it->next->data[0]) == 0) {
-        HashTableNode* temp = table->node_array[0]->next;
-        free(table->node_array[0]);
-        table->node_array[0] = temp;
-        table->elements_stored--;
-        
-        if (table->elements_stored < table->array_size / 4) {
-             hash_table_resize(table_ptr, (*table_ptr)->array_size / 2);
-
-        }
-
-        return 0;
+    if (table->elements_stored < table->array_size / 4) {
+        return hash_table_resize(table_ptr, table->array_size / 2);
     }
 
-    return 1;
+    return 0;
 }
 
 int hash_table_get(register const HashTable* const table,
@@ -200,7 +165,7 @@ int hash_table_get(register const HashTable* const table,
 
     while (it != NULL && table->is_different(key, &it->data[0]) != 0) {it = it->next;}
 
-    if (it == NULL) {return 1;}
+    if (it == NULL) {return HT_NOT_FOUND;}
 
     memcpy(destination, &it->data[table->key_size], table->value_size);
     return 0;
@@ -228,7 +193,7 @@ HashTable* hash_table_copy(const HashTable* const table) {
 }
 
 int hash_table_resize(HashTable** table_ptr, const size_t new_size) {
-    if (new_size == 0) {return 2;}
+    if (new_size == 0) {return HT_INVALID_ARGUMENT;}
     /*Shrinking case*/
     if (new_size < (*table_ptr)->array_size) {
         HashTableNode* tail = (*table_ptr)->node_array[0];
@@ -243,14 +208,15 @@ int hash_table_resize(HashTable** table_ptr, const size_t new_size) {
     HashTable* result_table = realloc(*table_ptr, sizeof(*result_table)
                                       + sizeof(result_table->node_array[0]) * new_size);
 
-    if (result_table == NULL) {return 1;}
+    if (result_table == NULL) {return HT_MEM_FAIL;}
 
     result_table->array_size = new_size;
-    hash_table_fixup(result_table);
+    hash_table_fixup(&result_table);
     table_ptr = &result_table;
 }
 
-static inline HashTableNode* copy_list(const HashTableNode* node, const size_t key_size, const size_t value_size) {
+static inline HashTableNode* copy_list(const HashTableNode* node, const size_t key_size,
+                                       const size_t value_size) {
     if (node == NULL) {return NULL;}
 
     HashTableNode* result = malloc(sizeof(*result) + sizeof(result->data[0]) * (key_size + value_size));
@@ -277,7 +243,8 @@ static inline HashTableNode* copy_list(const HashTableNode* node, const size_t k
     return result;
 }
 
-static inline void hash_table_fixup(HashTable* table) {//change to pointer to pointer
+static inline void hash_table_fixup(HashTable** const table_ptr) {//change to pointer to pointer
+    HashTable* table = *table_ptr;
     for (size_t i = 0; i < table->array_size; i++) {
         if (table->node_array[i] == NULL) {continue;}
 
@@ -300,6 +267,7 @@ static inline void hash_table_fixup(HashTable* table) {//change to pointer to po
             }
         }
     }
+    *table_ptr = table;
 }
 
 static inline void destroy_list(HashTableNode* list) {

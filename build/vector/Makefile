@@ -78,6 +78,17 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
 # The main all target
 all: cmake_check_build_system
 	cd /home/norbert/Documents/c_projects/c_collections/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/norbert/Documents/c_projects/c_collections/build/CMakeFiles /home/norbert/Documents/c_projects/c_collections/build/vector/CMakeFiles/progress.marks
@@ -109,6 +120,21 @@ preinstall/fast:
 depend:
 	cd /home/norbert/Documents/c_projects/c_collections/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+# Convenience name for target.
+vector/CMakeFiles/Vector_test.dir/rule:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f CMakeFiles/Makefile2 vector/CMakeFiles/Vector_test.dir/rule
+.PHONY : vector/CMakeFiles/Vector_test.dir/rule
+
+# Convenience name for target.
+Vector_test: vector/CMakeFiles/Vector_test.dir/rule
+
+.PHONY : Vector_test
+
+# fast build rule for target.
+Vector_test/fast:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/build
+.PHONY : Vector_test/fast
 
 # Convenience name for target.
 vector/CMakeFiles/Vector.dir/rule:
@@ -152,6 +178,60 @@ src/vector.c.s:
 	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector.dir/build.make vector/CMakeFiles/Vector.dir/src/vector.c.s
 .PHONY : src/vector.c.s
 
+test/test.o: test/test.c.o
+
+.PHONY : test/test.o
+
+# target to build an object file
+test/test.c.o:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/test/test.c.o
+.PHONY : test/test.c.o
+
+test/test.i: test/test.c.i
+
+.PHONY : test/test.i
+
+# target to preprocess a source file
+test/test.c.i:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/test/test.c.i
+.PHONY : test/test.c.i
+
+test/test.s: test/test.c.s
+
+.PHONY : test/test.s
+
+# target to generate assembly for a file
+test/test.c.s:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/test/test.c.s
+.PHONY : test/test.c.s
+
+test/test_vector.o: test/test_vector.c.o
+
+.PHONY : test/test_vector.o
+
+# target to build an object file
+test/test_vector.c.o:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/test/test_vector.c.o
+.PHONY : test/test_vector.c.o
+
+test/test_vector.i: test/test_vector.c.i
+
+.PHONY : test/test_vector.i
+
+# target to preprocess a source file
+test/test_vector.c.i:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/test/test_vector.c.i
+.PHONY : test/test_vector.c.i
+
+test/test_vector.s: test/test_vector.c.s
+
+.PHONY : test/test_vector.s
+
+# target to generate assembly for a file
+test/test_vector.c.s:
+	cd /home/norbert/Documents/c_projects/c_collections/build && $(MAKE) -f vector/CMakeFiles/Vector_test.dir/build.make vector/CMakeFiles/Vector_test.dir/test/test_vector.c.s
+.PHONY : test/test_vector.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -160,10 +240,18 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... test"
+	@echo "... Vector_test"
 	@echo "... Vector"
 	@echo "... src/vector.o"
 	@echo "... src/vector.i"
 	@echo "... src/vector.s"
+	@echo "... test/test.o"
+	@echo "... test/test.i"
+	@echo "... test/test.s"
+	@echo "... test/test_vector.o"
+	@echo "... test/test_vector.i"
+	@echo "... test/test_vector.s"
 .PHONY : help
 
 

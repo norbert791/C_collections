@@ -21,7 +21,7 @@ size_t vector_get_max_size(const Vector *v);
 
 bool vector_is_empty(const Vector *v);
 bool vector_is_full(const Vector *v);
-
+int vector_resize(Vector** const v, size_t new_size);
 
 int vector_push_back(Vector** restrict v, const void* restrict new_elem);
 int vector_pop_back(Vector* restrict v, void* restrict popped_elem);

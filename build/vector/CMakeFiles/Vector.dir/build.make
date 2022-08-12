@@ -60,15 +60,15 @@ include vector/CMakeFiles/Vector.dir/flags.make
 vector/CMakeFiles/Vector.dir/src/vector.c.o: vector/CMakeFiles/Vector.dir/flags.make
 vector/CMakeFiles/Vector.dir/src/vector.c.o: ../vector/src/vector.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/norbert/Documents/c_projects/c_collections/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object vector/CMakeFiles/Vector.dir/src/vector.c.o"
-	cd /home/norbert/Documents/c_projects/c_collections/build/vector && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Vector.dir/src/vector.c.o   -c /home/norbert/Documents/c_projects/c_collections/vector/src/vector.c
+	cd /home/norbert/Documents/c_projects/c_collections/build/vector && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Vector.dir/src/vector.c.o   -c /home/norbert/Documents/c_projects/c_collections/vector/src/vector.c
 
 vector/CMakeFiles/Vector.dir/src/vector.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Vector.dir/src/vector.c.i"
-	cd /home/norbert/Documents/c_projects/c_collections/build/vector && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/norbert/Documents/c_projects/c_collections/vector/src/vector.c > CMakeFiles/Vector.dir/src/vector.c.i
+	cd /home/norbert/Documents/c_projects/c_collections/build/vector && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/norbert/Documents/c_projects/c_collections/vector/src/vector.c > CMakeFiles/Vector.dir/src/vector.c.i
 
 vector/CMakeFiles/Vector.dir/src/vector.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Vector.dir/src/vector.c.s"
-	cd /home/norbert/Documents/c_projects/c_collections/build/vector && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/norbert/Documents/c_projects/c_collections/vector/src/vector.c -o CMakeFiles/Vector.dir/src/vector.c.s
+	cd /home/norbert/Documents/c_projects/c_collections/build/vector && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/norbert/Documents/c_projects/c_collections/vector/src/vector.c -o CMakeFiles/Vector.dir/src/vector.c.s
 
 # Object files for target Vector
 Vector_OBJECTS = \

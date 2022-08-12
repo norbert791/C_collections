@@ -59,3 +59,7 @@ templates/
 
 # Private tasks
 knowledge_sharing
+
+#build directory
+build
+./build/*

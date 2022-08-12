@@ -5,6 +5,14 @@
 
 typedef struct HashTable HashTable;
 
+typedef enum EHashTableConstants {
+    HT_NOT_FOUND = 1,
+    HT_DUPLICATE = 2,
+    HT_INVALID_ARGUMENT = 3,
+    HT_MEM_FAIL = 4,
+    HT_DEFAULT_SIZE = 32,
+} EHashTableConstants;
+
 HashTable* hash_table_create(size_t key_size, size_t value_size, size_t initial_size,
                             size_t (*hash_function)(const void*), int (*is_different)(const void*, const void*));
 

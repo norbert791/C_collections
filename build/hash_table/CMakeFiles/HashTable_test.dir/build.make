@@ -60,15 +60,15 @@ include hash_table/CMakeFiles/HashTable_test.dir/flags.make
 hash_table/CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.o: hash_table/CMakeFiles/HashTable_test.dir/flags.make
 hash_table/CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.o: ../hash_table/test/hash_table_unit_tests.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/norbert/Documents/c_projects/c_collections/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object hash_table/CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.o"
-	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.o   -c /home/norbert/Documents/c_projects/c_collections/hash_table/test/hash_table_unit_tests.c
+	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.o   -c /home/norbert/Documents/c_projects/c_collections/hash_table/test/hash_table_unit_tests.c
 
 hash_table/CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.i"
-	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/norbert/Documents/c_projects/c_collections/hash_table/test/hash_table_unit_tests.c > CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.i
+	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/norbert/Documents/c_projects/c_collections/hash_table/test/hash_table_unit_tests.c > CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.i
 
 hash_table/CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.s"
-	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/norbert/Documents/c_projects/c_collections/hash_table/test/hash_table_unit_tests.c -o CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.s
+	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/norbert/Documents/c_projects/c_collections/hash_table/test/hash_table_unit_tests.c -o CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.s
 
 # Object files for target HashTable_test
 HashTable_test_OBJECTS = \

@@ -60,15 +60,15 @@ include hash_table/CMakeFiles/HashTable.dir/flags.make
 hash_table/CMakeFiles/HashTable.dir/src/hash_table.c.o: hash_table/CMakeFiles/HashTable.dir/flags.make
 hash_table/CMakeFiles/HashTable.dir/src/hash_table.c.o: ../hash_table/src/hash_table.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/norbert/Documents/c_projects/c_collections/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object hash_table/CMakeFiles/HashTable.dir/src/hash_table.c.o"
-	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HashTable.dir/src/hash_table.c.o   -c /home/norbert/Documents/c_projects/c_collections/hash_table/src/hash_table.c
+	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HashTable.dir/src/hash_table.c.o   -c /home/norbert/Documents/c_projects/c_collections/hash_table/src/hash_table.c
 
 hash_table/CMakeFiles/HashTable.dir/src/hash_table.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HashTable.dir/src/hash_table.c.i"
-	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/norbert/Documents/c_projects/c_collections/hash_table/src/hash_table.c > CMakeFiles/HashTable.dir/src/hash_table.c.i
+	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/norbert/Documents/c_projects/c_collections/hash_table/src/hash_table.c > CMakeFiles/HashTable.dir/src/hash_table.c.i
 
 hash_table/CMakeFiles/HashTable.dir/src/hash_table.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HashTable.dir/src/hash_table.c.s"
-	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/norbert/Documents/c_projects/c_collections/hash_table/src/hash_table.c -o CMakeFiles/HashTable.dir/src/hash_table.c.s
+	cd /home/norbert/Documents/c_projects/c_collections/build/hash_table && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/norbert/Documents/c_projects/c_collections/hash_table/src/hash_table.c -o CMakeFiles/HashTable.dir/src/hash_table.c.s
 
 # Object files for target HashTable
 HashTable_OBJECTS = \

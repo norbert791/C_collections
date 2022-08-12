@@ -5,7 +5,23 @@ project("HashTable")
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-add_library(${PROJECT_NAME} STATIC)
+add_library(${PROJECT_NAME})
+
+if (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    SET(${PROJECT_NAME}_FLAGS -Weverything -pedantic)
+    if (CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+        SET(${PROJECT_NAME}_FLAGS ${${PROJECT_NAME}_FLAGS} -O0 -g)
+    else()
+        SET(${PROJECT_NAME}_FLAGS ${${PROJECT_NAME}_FLAGS} -O3)
+    endif()
+elseif (CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    SET(${PROJECT_NAME}_FLAGS -Wall -Wextra -ansi -pedantic)
+    if (CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+        SET(${PROJECT_NAME}_FLAGS ${${PROJECT_NAME}_FLAGS} -O0 -g)
+    else()
+        SET(${PROJECT_NAME}_FLAGS ${${PROJECT_NAME}_FLAGS} -O3)
+    endif()
+endif()
 
 target_sources(${PROJECT_NAME}
     PRIVATE
@@ -14,39 +30,28 @@ target_sources(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        # where the library itself will look for its internal headers
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     PUBLIC
-        # where top-level project will look for the library's public headers
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
-        # where external projects will look for the library's public headers
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-# without it public headers won't get installed
 set(public_headers
     inc/hash_table.h
 )
 
-if(CMAKE_COMPILER_IS_GNUC)
-    # compile options for this target only
-    # treat warnings as errors
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -g)
-endif() #TODO: different flags depending on build type
-
 enable_testing()
 
-add_executable(${PROJECT_NAME}_test test/hash_table_unit_tests.c)
+if (C_COLLECTIONS_INCLUDE_TEST)
+    add_executable(${PROJECT_NAME}_test test/hash_table_unit_tests.c)
 
-target_compile_options(${PROJECT_NAME}_test PRIVATE -O0 -g) #TODO: different flags depending on build type
+    target_compile_options(${PROJECT_NAME}_test PRIVATE ${${PROJECT_NAME}_FLAGS})
 
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME}_test m)
+    target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
+    target_link_libraries(${PROJECT_NAME}_test m)
 
-add_test(${PROJECT_NAME}_test ${PROJECT_NAME}_test)
+    add_test(${PROJECT_NAME}_test ${PROJECT_NAME}_test)
+endif()
 
-
-# where to find our CMake modules
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-#message(STATUS "CMake module path: ${CMAKE_MODULE_PATH}")
 

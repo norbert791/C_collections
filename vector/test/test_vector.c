@@ -31,7 +31,7 @@ static void vector_create_test(void)
     Vector* const v = vector_create(0, VECTOR_DEFAULT_CAPACITY_OPTION);
     assert(v == NULL);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s
@@ -45,7 +45,7 @@ static void vector_create_test(void)
     assert(vector_get_curr_size(v) == 0);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -59,7 +59,7 @@ static void vector_resize_test(void)
     int result = vector_resize(&v, 2);
     assert(result == -1);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - inavlid new_size
@@ -74,7 +74,7 @@ static void vector_resize_test(void)
     result = vector_resize(&v, 5);
     assert(result == -1);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   { 
     // Valid argument/s - shrink
@@ -99,7 +99,7 @@ static void vector_resize_test(void)
     assert(vector_get_curr_size(v) == 0);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s - enlarge
@@ -124,7 +124,7 @@ static void vector_resize_test(void)
     assert(vector_get_curr_size(v) == 0);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -148,7 +148,7 @@ static void vector_push_back_failure_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid elem
@@ -162,7 +162,7 @@ static void vector_push_back_failure_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -191,7 +191,7 @@ static void vector_push_back_1_test(void)
     assert(vector_get_curr_size(v) == 1);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -243,7 +243,7 @@ static void vector_push_back_to_more_than_half_full_test(void)
     assert(vector_get_curr_size(v) == 3);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -284,7 +284,7 @@ static void vector_push_back_to_full_test()
     assert(vector_get_curr_size(v) == max_size);
     assert(vector_get_max_size(v) == max_size);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -307,7 +307,7 @@ static void vector_pop_back_failure_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid elem
@@ -321,7 +321,7 @@ static void vector_pop_back_failure_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Popback on empty
@@ -335,7 +335,7 @@ static void vector_pop_back_failure_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
     
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -374,7 +374,7 @@ static void vector_pop_back_1_test(void)
     assert(vector_get_curr_size(v) == 0);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -443,7 +443,7 @@ static void vector_pop_back_to_empty_test(void)
     assert(vector_get_curr_size(v) == 0);
     assert(vector_get_max_size(v) == max_size);
 
-    vector_delete(v);
+    vector_destroy(v);
     free(temp);
   }
 }
@@ -468,7 +468,7 @@ static void vector_find_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid elem
@@ -482,7 +482,7 @@ static void vector_find_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Find on empty
@@ -496,7 +496,7 @@ static void vector_find_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s - push some values and find all
@@ -530,7 +530,7 @@ static void vector_find_test(void)
     size_t result = vector_find(v, &(int){21});
     assert(result == ELEM_NOT_FOUND);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -553,7 +553,7 @@ static void vector_at_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid index, out of bounds, at on empty
@@ -572,7 +572,7 @@ static void vector_at_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid elem
@@ -591,7 +591,7 @@ static void vector_at_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s - push some values and at them
@@ -624,7 +624,7 @@ static void vector_at_test(void)
       assert(result == 0);
     }
 
-    vector_delete(v);
+    vector_destroy(v);
     free(at_value);
   }
 }
@@ -648,7 +648,7 @@ static void vector_update_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid index, out of bounds, update on empty
@@ -667,7 +667,7 @@ static void vector_update_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid elem
@@ -686,7 +686,7 @@ static void vector_update_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s - push some values and update them
@@ -720,7 +720,7 @@ static void vector_update_test(void)
       assert(*at_value == (int)(3 * i));
     }
 
-    vector_delete(v);
+    vector_destroy(v);
     free(at_value);
   }
 }
@@ -734,16 +734,16 @@ static void vector_delete_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    int result = vector_delete(v, ELEM_NOT_FOUND);
+    int result = vector_remove(v, ELEM_NOT_FOUND);
     assert(result == -1);
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
-    result = vector_delete(v, ELEM_NOT_FOUND);
+    result = vector_remove(v, ELEM_NOT_FOUND);
     assert(result == -1);
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid index, out of bounds, delete on empty
@@ -762,7 +762,7 @@ static void vector_delete_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s - push 1, delete 1
@@ -798,7 +798,7 @@ static void vector_delete_test(void)
     assert(vector_get_curr_size(v) == 0);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Valid argument/s - push some values and delete them in some order
@@ -856,7 +856,7 @@ static void vector_delete_test(void)
       assert(vector_get_max_size(v) == max_size);
     }
 
-    vector_delete(v);
+    vector_destroy(v);
   }
 }
 
@@ -876,7 +876,7 @@ static void vector_insert_failure_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid elem
@@ -891,7 +891,7 @@ static void vector_insert_failure_test(void)
     assert(vector_is_empty(v) == true);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);
+    vector_destroy(v);
   }
   {
     // Invalid argument/s - invalid index
@@ -917,7 +917,7 @@ static void vector_insert_failure_test(void)
     assert(vector_is_empty(v) == false);
     assert(vector_is_full(v) == false);
 
-    vector_delete(v);    
+    vector_destroy(v);    
   }
 }
 
@@ -957,7 +957,7 @@ static void vector_insert_1_test(void)
     assert(result == 0);
     assert(*check_elem == inserted_val / 2);
 
-    vector_delete(v);    
+    vector_destroy(v);    
     free(check_elem);
   }
 }
@@ -1003,7 +1003,7 @@ static void vector_insert_at_begin_test(void)
 
     assert(vector_get_curr_size(v) == pushed_elems + 1);
 
-    vector_delete(v);    
+    vector_destroy(v);    
     free(check_elem);
   }
 }
@@ -1053,7 +1053,7 @@ static void vector_insert_at_end_test(void)
 
     assert(vector_get_curr_size(v) == pushed_elems + 1);
 
-    vector_delete(v);    
+    vector_destroy(v);    
     free(check_elem);
   }
 }
@@ -1099,7 +1099,7 @@ static void vector_insert_after_end_test(void)
 
     assert(vector_get_curr_size(v) == pushed_elems + 1);
 
-    vector_delete(v);    
+    vector_destroy(v);    
     free(check_elem);
   }
 }
@@ -1153,7 +1153,7 @@ static void vector_insert_to_more_than_half_full_test(void)
     assert(vector_get_curr_size(v) == pushed_elems + 1);
     assert(vector_get_max_size(v) == VECTOR_MAXIMUM_CAPACITY);
 
-    vector_delete(v);    
+    vector_destroy(v);    
     free(check_elem);
   }
 }
@@ -1172,8 +1172,8 @@ static void vector_copy_test(void)
     Vector* v_copy = vector_copy(v);
     assert(v_copy == NULL);
 
-    vector_delete(v);
-    vector_remove(v_copy);
+    vector_destroy(v);
+    vector_destroy(v_copy);
   }
   {
     // Valid argument/s
@@ -1219,8 +1219,8 @@ static void vector_copy_test(void)
 
     free(v_at);
     free(v_copy_at);
-    vector_delete(v);
-      vector_remove(v_copy);
+    vector_destroy(v);
+    vector_destroy(v_copy);
   }
 }
 
