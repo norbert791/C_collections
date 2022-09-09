@@ -19,6 +19,9 @@ struct HashTable
     size_t array_size;
     size_t (*hash_function)(const void*);
     int (*is_different)(const void*, const void*);
+    /*Since memory of HashTableNode is not aligned to save memory and make implementation easier 
+      keys have to be copied to aligned memory before call to is_different or hash_function*/
+    void* key_proxy;
     HashTableNode* node_array[]; /*FAM*/ 
 };
 
@@ -38,6 +41,13 @@ HashTable* hash_table_create(const size_t key_size, const size_t value_size, siz
     HashTable* result = calloc(1, sizeof(*result) + sizeof(result->node_array[0]) * initial_size);
 
     if (result == NULL) {return NULL;}
+    
+    result->key_proxy = malloc(key_size);
+    
+    if (result->key_proxy == NULL) {
+        free(result);
+        return NULL;
+    }
 
     result->key_size = key_size;
     result->elements_stored = 0;
@@ -54,6 +64,7 @@ void hash_table_destroy(HashTable* hash_table) {
         for (size_t i = 0; i < hash_table->array_size; i++) {
             destroy_list(hash_table->node_array[i]);
         }
+        free(hash_table->key_proxy);
         free(hash_table);
     }
 }
@@ -66,7 +77,9 @@ int hash_table_put(HashTable** const hash_table_ptr, register const void* const 
     
     HashTableNode** node_ptr = &hash_table->node_array[index];
 
-    while (*node_ptr != NULL && hash_table->is_different((*node_ptr)->data, key) != 0) {
+    while (*node_ptr != NULL) {
+        memcpy(hash_table->key_proxy, (*node_ptr)->data, hash_table->key_size);
+        if ( hash_table->is_different(hash_table->key_proxy, key) == 0) {break;}
         *node_ptr = (*node_ptr)->next;
     }
 
@@ -105,7 +118,9 @@ int hash_table_insert(HashTable** const hash_table_ptr, register const void* con
     
     HashTableNode** node_ptr = &hash_table->node_array[index];
 
-    while (*node_ptr != NULL && hash_table->is_different((*node_ptr)->data, key) != 0) {
+    while (*node_ptr != NULL) {
+        memcpy(hash_table->key_proxy, (*node_ptr)->data, hash_table->key_size);
+        if ( hash_table->is_different(hash_table->key_proxy, key) == 0) {break;}
         *node_ptr = (*node_ptr)->next;
     }
 
@@ -137,7 +152,9 @@ int hash_table_remove(HashTable** const table_ptr, const void* const key) { /*TO
     index %= table->array_size;
     HashTableNode** iterator = &table->node_array[index];
 
-    while(*iterator != NULL && table->is_different(&(*iterator)->data[0], key) != 0) {
+    while(*iterator != NULL) {
+        memcpy(table->key_proxy, &(*iterator)->data[0], table->key_size);
+        if (table->is_different(table->key_proxy, key) == 0) {break;}
         *iterator = (*iterator)->next;
     }
 
@@ -163,7 +180,11 @@ int hash_table_get(register const HashTable* const table,
     index %= table->array_size;
     HashTableNode* it = table->node_array[index];
 
-    while (it != NULL && table->is_different(key, &it->data[0]) != 0) {it = it->next;}
+    while (it != NULL) {
+        memcpy(table->key_proxy, &it->data[0], table->key_size);
+        if (table->is_different(key, &it->data[0]) == 0) {break;}
+        it = it->next;
+    }
 
     if (it == NULL) {return HT_NOT_FOUND;}
 
@@ -175,7 +196,6 @@ HashTable* hash_table_copy(const HashTable* const table) {
     HashTable* result = hash_table_create(table->key_size, table->value_size, table->array_size,
                         table->hash_function, table->is_different);
     if (result == NULL) {return NULL;}
-
     for (size_t i = 0; i < table->elements_stored; i++) {
         if (table->node_array[i] == NULL) {continue;}
 
@@ -186,8 +206,6 @@ HashTable* hash_table_copy(const HashTable* const table) {
             return NULL;
         }
     }
-
-    memcpy(result, table, sizeof(*table));
 
     return result;
 }
@@ -252,7 +270,8 @@ static inline void hash_table_fixup(HashTable** const table_ptr) {//change to po
         HashTableNode* current = table->node_array[i];
 
         while(current != NULL) {
-            size_t new_index = table->hash_function(current->data) % table->array_size;
+            memcpy(table->key_proxy, current->data, table->key_size);
+            size_t new_index = table->hash_function(table->key_proxy) % table->array_size;
             if (new_index != i) {
                 uint8_t temp_memory[table->value_size + table->key_size];
                 memcpy(temp_memory, current->data, table->value_size + table->key_size);

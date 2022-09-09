@@ -1,1 +1,0 @@
-/usr/bin/cc    CMakeFiles/HashTable_test.dir/test/hash_table_unit_tests.c.o  -o HashTable_test  libHashTable.a -lm 

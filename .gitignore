@@ -62,4 +62,4 @@ knowledge_sharing
 
 #build directory
 build
-./build/*
+build/*
